@@ -4,6 +4,7 @@ import axios from "axios"
 import BaseUrl from "../constant/BaseUrl"
 import Toastify from "toastify-js"
 import "toastify-js/src/toastify.css"
+import { GoogleLogin } from "@react-oauth/google"
 
 
 export default function Login() {
@@ -15,7 +16,7 @@ export default function Login() {
         try {
             const response = await axios.post(`${BaseUrl}/users/login`, { email, password })
             localStorage.setItem("token", response.data.access_token)
-            console.log(response.data.access_token);
+
 
 
             Toastify({
@@ -30,12 +31,54 @@ export default function Login() {
                 },
             }).showToast();
             navigate("/")
+
         } catch (error) {
-            console.log(error.response);
 
             Toastify({
+                text: error.response?.data?.message ||
+                    error.message ||
+                    "Something went wrong",
+                duration: 3000,
+                close: true,
+                gravity: "top", // `top` or `bottom`
+                position: "center", // `left`, `center` or `right`
+                stopOnFocus: true, // Prevents dismissing of toast on hover
+                style: {
+                    background: "linear-gradient(to right, #a0073fff, #d6124bff)",
+                },
+            }).showToast();
+        }
+    }
+    const handleGoogleLogin = async (credentialResponse) => {
+        try {
 
-                text: error.response.data.message,
+            const { data } = await axios.post(`${BaseUrl}/users/google-login`, {}, {
+                headers: {
+                    access_token_google: credentialResponse.credential
+                }
+            })
+            console.log(data);
+
+            localStorage.setItem("token", data.access_token)
+            Toastify({
+                text: "Login Success",
+                duration: 3000,
+                close: true,
+                gravity: "top", // `top` or `bottom`
+                position: "center", // `left`, `center` or `right`
+                stopOnFocus: true, // Prevents dismissing of toast on hover
+                style: {
+                    background: "linear-gradient(to right, #30ae58ff, #157a3cff)",
+                },
+            }).showToast();
+            navigate("/")
+
+        } catch (error) {
+
+            Toastify({
+                text: error.response?.data?.message ||
+                    error.message ||
+                    "Something went wrong",
                 duration: 3000,
                 close: true,
                 gravity: "top", // `top` or `bottom`
@@ -78,8 +121,12 @@ export default function Login() {
                     </div>
                     <button className="w-full rounded-lg bg-slate-300 font-medium px-6 py-2 mb-6 flex cursor-pointer  items-center  justify-center hover:bg-blue-700 hover:text-white transition">Sign</button>
                     <p className="text-center text-gray-400 text-sm ">don't have an account? <Link to="/register" className="text-blue-600 font-medium">Register</Link></p>
+                    <GoogleLogin
+                        onSuccess={handleGoogleLogin}
 
+                    />
                 </form>
+
 
             </div>
         </div>

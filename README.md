@@ -1,10 +1,11 @@
 <<<<<<< HEAD
-# 🚀 CaptionLab AI -- API Documentation
+
+# 🚀 Capt AI -- API Documentation
 
 AI-powered caption generator untuk membuat caption media sosial
-berdasarkan deskripsi gambar, tone, dan platform.
+berdasarkan gambar, tone, dan platform.
 
-------------------------------------------------------------------------
+---
 
 ## 🌐 Base URL
 
@@ -16,72 +17,72 @@ http://localhost:3400
 
 https://server.viyansyah.my.id
 
-------------------------------------------------------------------------
+---
 
 # 🔐 Authentication
 
-Semua endpoint (kecuali `register` & `login`) membutuhkan JWT Token.
+Semua endpoint (kecuali `register` & `login`) membutuhkan token JWT.
 
 Gunakan header berikut:
 
 Authorization: Bearer `<access_token>`{=html}
 
-------------------------------------------------------------------------
+---
 
 # 👤 Auth Endpoints
 
 ## 1️⃣ Register
 
-**POST** /register
+**POST** `/register`
 
 ### Request Body
 
-``` json
+```json
 {
-  "username": "viyan",
-  "email": "viyan@mail.com",
+  "email": "user@mail.com",
   "password": "123456"
 }
 ```
 
-### Success Response (201)
+### Response (201)
 
-``` json
+```json
 {
-  "message": "Register success"
+  "id": 1,
+  "email": "user@mail.com"
 }
 ```
 
-------------------------------------------------------------------------
+---
 
 ## 2️⃣ Login
 
-**POST** /login
+**POST** `/login`
 
 ### Request Body
 
-``` json
+```json
 {
-  "email": "viyan@mail.com",
+  "email": "user@mail.com",
   "password": "123456"
 }
 ```
 
-### Success Response (200)
+### Response (200)
 
-``` json
+```json
 {
-  "access_token": "jwt_token_here"
+  "access_token": "your_jwt_token_here"
 }
 ```
 
-------------------------------------------------------------------------
+---
 
 # 📝 Caption Endpoints
 
 ## 1️⃣ Generate Caption
 
-**POST** /captions
+**POST** `/captions`
 
 ### Headers
 
@@ -90,105 +91,105 @@ Content-Type: multipart/form-data
 
 ### Form Data
 
-  Field      Type     Required
-  ---------- -------- ----------
-  prompt     string   ✅
-  tone       string   ✅
-  platform   string   ✅
-  image      file     ❌
+Field Type Required
 
-### Success Response (201)
+---
 
-``` json
+prompt text ✅
+tone text ✅
+platform text ✅
+image file ✅
+
+### Response (201)
+
+```json
 {
   "id": 1,
-  "prompt": "A sunset at the beach",
-  "tone": "formal",
-  "platform": "Instagram",
-  "caption": "A serene sunset gracing the horizon...",
-  "imageUrl": "https://cloudinary.com/....jpg",
-  "createdAt": "2026-02-20T00:00:00.000Z"
+  "prompt": "Pantai indah di sore hari",
+  "tone": "friendly",
+  "platform": "instagram",
+  "imageUrl": "https://ucarecdn.com/xxxx.jpg",
+  "caption": "Menutup hari dengan langit jingga dan deburan ombak 🌊✨",
+  "userId": 1,
+  "createdAt": "2026-02-19T10:00:00.000Z"
 }
 ```
 
-------------------------------------------------------------------------
+---
 
 ## 2️⃣ Get All Captions
 
-**GET** /captions
+**GET** `/captions`
 
-### Success Response (200)
+### Response (200)
 
-``` json
+```json
 [
   {
     "id": 1,
-    "prompt": "A sunset at the beach",
-    "tone": "formal",
-    "platform": "Instagram",
-    "caption": "...",
-    "imageUrl": "...",
-    "createdAt": "..."
+    "caption": "Menutup hari dengan langit jingga...",
+    "imageUrl": "https://ucarecdn.com/xxxx.jpg"
   }
 ]
 ```
 
-------------------------------------------------------------------------
+---
 
-## 3️⃣ Get Caption By ID
+---
 
-**GET** /captions/:id
+## 4️⃣ Regenerate Caption
 
-------------------------------------------------------------------------
+**PUT** `/captions/:id`
 
-## 4️⃣ Delete Caption
+### Request Body
 
-**DELETE** /captions/:id
-
-------------------------------------------------------------------------
-
-# ❌ Error Responses
-
-## 400 -- Bad Request
-
-``` json
+```json
 {
-  "message": "tone prompt platform is required"
+  "tone": "formal"
 }
 ```
 
-## 401 -- Unauthorized
+### Response (200)
 
-``` json
+```json
 {
-  "message": "Invalid token"
+  "message": "Caption updated",
+  "caption": "Pemandangan senja yang menenangkan dengan gradasi warna yang indah."
 }
 ```
 
-## 404 -- Not Found
+---
 
-``` json
+## 5️⃣ Delete Caption
+
+**DELETE** `/captions/:id`
+
+### Response (200)
+
+```json
 {
-  "message": "Data not found"
+  "message": "Caption deleted successfully"
 }
 ```
 
-## 500 -- Internal Server Error
+---
 
-``` json
+# ⚠️ Error Format
+
+```json
 {
-  "message": "Internal server error"
+  "message": "Error message here"
 }
 ```
 
-------------------------------------------------------------------------
+---
 
 # 🛠 Tech Stack
 
--   Node.js
--   Express.js
--   Sequelize
--   PostgreSQL
--   JWT
--   Cloudinary
--   Gemini AI
+- Node.js\
+- Express\
+- Sequelize\
+- PostgreSQL\
+- JWT Authentication\
+- Uploadcare\
+- Google Gemini API

@@ -1,2 +1,2 @@
-const BaseUrl = "http://localhost:3400/api"
+const BaseUrl = "http://54.169.148.4/api"
 export default BaseUrl

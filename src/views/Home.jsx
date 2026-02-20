@@ -14,7 +14,7 @@ export default function Home() {
 
     const handleUpdate = async () => {
         try {
-            await axios.put(`${BaseUrl}/captions/${generatedResult.id}`, {
+            await axios.put(`${BaseUrl}/captions/${generatedResult.id}`, {}, {
                 headers: {
                     "Authorization": `Bearer ${localStorage.getItem("token")}`
                 }
@@ -68,33 +68,34 @@ export default function Home() {
 
 
     return (
-        <div className="mx-auto max-w-6xl px-4 py-10">
+        <div className="mx-auto max-w-6xl px-4 py-8">
 
             {generatedResult && (
                 <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
                     <h3 className="mb-4 text-xl font-semibold text-gray-800">
                         Generated Result
                     </h3>
-                    <div className="flex justify-end">
-                        <button onClick={handleDelete} className="rounded-lg bg-red-600 px-6 py-3 font-semibold text-white">
-                            Delete
-                        </button>
-                    </div>
-                    <div className="flex justify-end">
-                        <button onClick={handleUpdate} className="rounded-lg bg-blue-600 px-6 py-3 font-semibold text-white">
-                            Update
-                        </button>
-                    </div>
                     <img className="w-full h-64 object-contain rounded-lg" src={generatedResult.imageUrl} />
 
                     <div className="my-4 rounded-lg bg-gray-50 p-4 whitespace-pre-wrap">
                         {generatedResult.generatedText}
+
+                    </div>
+
+                    <div className="flex justify-center gap-4">
+                        <button onClick={handleUpdate} className="rounded-lg bg-blue-600 px-6 py-3 font-semibold text-white">
+                            Update
+                        </button>
+                        <button onClick={handleDelete} className="rounded-lg bg-red-600 px-6 py-3 font-semibold text-white">
+                            Delete
+                        </button>
                     </div>
                 </div>
+
             )}
 
 
-            <form onSubmit={handleSubmit} className="mb-4 rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+            <form onSubmit={handleSubmit} className="mb-4 rounded-xl border border-gray-200 bg-white p-6 mt-8 shadow-sm">
                 <h2 className=" text-2xl font-bold text-gray-800">
                     Generate New Content
                 </h2>

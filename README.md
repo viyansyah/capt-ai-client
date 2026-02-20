@@ -1,16 +1,193 @@
-# React + Vite
+# 🚀 CaptionLab AI -- API Documentation
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+AI-powered caption generator untuk membuat caption media sosial
+berdasarkan deskripsi gambar, tone, dan platform.
 
-Currently, two official plugins are available:
+------------------------------------------------------------------------
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🌐 Base URL
 
-## React Compiler
+### Local
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+http://localhost:3400
 
-## Expanding the ESLint configuration
+### Production
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+https://server.viyansyah.my.id
+
+------------------------------------------------------------------------
+
+# 🔐 Authentication
+
+Semua endpoint (kecuali `register` & `login`) membutuhkan JWT Token.
+
+Gunakan header berikut:
+
+Authorization: Bearer `<access_token>`{=html}
+
+------------------------------------------------------------------------
+
+# 👤 Auth Endpoints
+
+## 1️⃣ Register
+
+**POST** /register
+
+### Request Body
+
+``` json
+{
+  "username": "viyan",
+  "email": "viyan@mail.com",
+  "password": "123456"
+}
+```
+
+### Success Response (201)
+
+``` json
+{
+  "message": "Register success"
+}
+```
+
+------------------------------------------------------------------------
+
+## 2️⃣ Login
+
+**POST** /login
+
+### Request Body
+
+``` json
+{
+  "email": "viyan@mail.com",
+  "password": "123456"
+}
+```
+
+### Success Response (200)
+
+``` json
+{
+  "access_token": "jwt_token_here"
+}
+```
+
+------------------------------------------------------------------------
+
+# 📝 Caption Endpoints
+
+## 1️⃣ Generate Caption
+
+**POST** /captions
+
+### Headers
+
+Authorization: Bearer `<access_token>`{=html}\
+Content-Type: multipart/form-data
+
+### Form Data
+
+  Field      Type     Required
+  ---------- -------- ----------
+  prompt     string   ✅
+  tone       string   ✅
+  platform   string   ✅
+  image      file     ❌
+
+### Success Response (201)
+
+``` json
+{
+  "id": 1,
+  "prompt": "A sunset at the beach",
+  "tone": "formal",
+  "platform": "Instagram",
+  "caption": "A serene sunset gracing the horizon...",
+  "imageUrl": "https://cloudinary.com/....jpg",
+  "createdAt": "2026-02-20T00:00:00.000Z"
+}
+```
+
+------------------------------------------------------------------------
+
+## 2️⃣ Get All Captions
+
+**GET** /captions
+
+### Success Response (200)
+
+``` json
+[
+  {
+    "id": 1,
+    "prompt": "A sunset at the beach",
+    "tone": "formal",
+    "platform": "Instagram",
+    "caption": "...",
+    "imageUrl": "...",
+    "createdAt": "..."
+  }
+]
+```
+
+------------------------------------------------------------------------
+
+## 3️⃣ Get Caption By ID
+
+**GET** /captions/:id
+
+------------------------------------------------------------------------
+
+## 4️⃣ Delete Caption
+
+**DELETE** /captions/:id
+
+------------------------------------------------------------------------
+
+# ❌ Error Responses
+
+## 400 -- Bad Request
+
+``` json
+{
+  "message": "tone prompt platform is required"
+}
+```
+
+## 401 -- Unauthorized
+
+``` json
+{
+  "message": "Invalid token"
+}
+```
+
+## 404 -- Not Found
+
+``` json
+{
+  "message": "Data not found"
+}
+```
+
+## 500 -- Internal Server Error
+
+``` json
+{
+  "message": "Internal server error"
+}
+```
+
+------------------------------------------------------------------------
+
+# 🛠 Tech Stack
+
+-   Node.js
+-   Express.js
+-   Sequelize
+-   PostgreSQL
+-   JWT
+-   Cloudinary
+-   Gemini AI

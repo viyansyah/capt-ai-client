@@ -1,2 +1,3 @@
-const BaseUrl = "http://54.169.148.4/api"
+const BaseUrl = "https://viyansyah.my.id/api"
+
 export default BaseUrl

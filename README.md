@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 🚀 CaptionLab AI -- API Documentation
 
 AI-powered caption generator untuk membuat caption media sosial

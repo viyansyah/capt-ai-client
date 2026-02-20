@@ -6,11 +6,13 @@ import Register from './views/Register'
 import Login from './views/Login'
 import ProtectedRoute from './componet/ProtectedRoute'
 import BaseLayout from './views/BaseLayout'
+import { Provider } from 'react-redux'
+import { store } from './app/store'
 
 function App() {
 
   return (
-    <>
+    <Provider store={store}>
       <BrowserRouter>
         <Routes>
           <Route path="/register" element={<Register />} />
@@ -20,7 +22,7 @@ function App() {
           </Route>
         </Routes>
       </BrowserRouter>
-    </>
+    </Provider>
   )
 }
 
